@@ -53,22 +53,9 @@ class DatePicker extends InputWidget
             $format = FormatConverter::convertDateIcuToPhp($this->dateFormat, 'datetime', $language);
         }
         $this->clientOptions['format'] = $this->convertDateFormat($format);
-        $this->clientOptions['timePicker'] = $this->timePicker;
-        $this->clientOptions['timePicker12Hour'] = $this->timePicker12Hour;
-        $this->clientOptions['separator'] = $this->separator;
-        if ($this->defaultRanges && ArrayHelper::getValue($this->clientOptions, 'range') === null) {
-            $this->clientOptions['ranges'] = [
-                'Today' => new JsExpression('[new Date(), new Date()]'),
-                'Yesterday' => new JsExpression('[moment().subtract("days", 1), moment().subtract("days", 1)]'),
-                'Last 7 Days' => new JsExpression('[moment().subtract("days", 6), new Date()]'),
-                'Last 30 Days' => new JsExpression('[moment().subtract("days", 29), new Date()]'),
-                'This Month' => new JsExpression('[moment().startOf("month"), moment().endOf("month")]'),
-                'Last Month' => new JsExpression('[moment().subtract("month", 1).startOf("month"), moment().subtract("month", 1).endOf("month")]'),
-            ];
-        }
 
 
-        $this->registerClientOptions('daterangepicker', $containerID);
+        $this->registerClientOptions('datepicker', $containerID);
     }
 
     protected function renderWidget()
@@ -106,62 +93,26 @@ class DatePicker extends InputWidget
     }
 
     /**
-     * Automatically convert the date format from PHP DateTime to Moment.js DateTime format
-     * as required by bootstrap-daterangepicker plugin.
-     *
-     * @see http://php.net/manual/en/function.date.php
-     * @see http://momentjs.com/docs/#/parsing/string-format/
-     *
-     * @param string $format the PHP date format string
+     * Automatically convert the date format from PHP DateTime to Bootstrap datepicker format
      *
      * @return string
-     * @author Kartik Visweswaran, Krajee.com, 2014
      */
     protected static function convertDateFormat($format)
     {
         return strtr($format, [
-            // meridian lowercase remains same
-            // 'a' => 'a',
-            // meridian uppercase remains same
-            // 'A' => 'A',
-            // second (with leading zeros)
-            's' => 'ss',
-            // minute (with leading zeros)
-            'i' => 'mm',
-            // hour in 12-hour format (no leading zeros)
-            'g' => 'h',
-            // hour in 12-hour format (with leading zeros)
-            'h' => 'hh',
-            // hour in 24-hour format (no leading zeros)
-            'G' => 'H',
-            // hour in 24-hour format (with leading zeros)
-            'H' => 'HH',
-            //  day of the week locale
-            'w' => 'e',
-            //  day of the week ISO
-            'W' => 'E',
-            // day of month (no leading zero)
-            'j' => 'D',
-            // day of month (two digit)
-            'd' => 'DD',
-            // day name short
-            'D' => 'DDD',
-            // day name long
-            'l' => 'DDDD',
-            // month of year (no leading zero)
-            'n' => 'M',
-            // month of year (two digit)
-            'm' => 'MM',
-            // month name short
-            'M' => 'MMM',
-            // month name long
-            'F' => 'MMMM',
-            // year (two digit)
-            'y' => 'YY',
-            // year (four digit)
-            'Y' => 'YYYY',
-            // unix timestamp
-            'U' => 'X',
+            // Days
+            'j' => 'd', // 2
+            'd' => 'dd', // 02
+            'D' => 'D', // Mon
+            'l' => 'DD', // Monday
+            // Month
+            'n' => 'm', // 9
+            'm' => 'mm', // 09
+            'M' => 'M', // Sep
+            'F' => 'MM', // September
+            // Year
+            'y' => 'yy', // 15
+            'Y' => 'yyyy', // 2015
         ]);
     }
 }

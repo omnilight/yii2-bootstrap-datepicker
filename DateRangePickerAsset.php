@@ -6,17 +6,13 @@ use yii\web\AssetBundle;
 
 
 /**
- * Class DateRangePickerAsset
+ * Class DatePickerAsset
  */
-class DateRangePickerAsset extends AssetBundle
+class DatePickerAsset extends AssetBundle
 {
-    public $sourcePath = '@bower/bootstrap-daterangepicker';
+    public $sourcePath = '@bower/bootstrap-datepicker';
 
     public $js = [
         'daterangepicker.js'
-    ];
-
-    public $depends = [
-        'omnilight\assets\MomentAsset',
     ];
 } 
