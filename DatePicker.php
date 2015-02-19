@@ -1,16 +1,13 @@
 <?php
 
 namespace omnilight\widgets;
-use omnilight\assets\DateRangePickerBootstrap2Asset;
-use omnilight\assets\DateRangePickerBootstrap3Asset;
+
+use omnilight\assets\DatePickerAsset;
 use Yii;
-use yii\base\InvalidConfigException;
-use yii\helpers\ArrayHelper;
 use yii\helpers\FormatConverter;
-use yii\helpers\Json;
-use yii\web\JsExpression;
-use yii\widgets\InputWidget;
 use yii\helpers\Html;
+use yii\helpers\Json;
+use yii\widgets\InputWidget;
 
 
 /**
@@ -42,10 +39,15 @@ class DatePicker extends InputWidget
 
     public function run()
     {
-        echo $this->renderWidget() ."\n";
+        echo $this->renderWidget() . "\n";
+        $asset = DatePickerAsset::register($this->view);
 
         $containerID = $this->options['id'];
         $language = $this->language ? $this->language : Yii::$app->language;
+
+        $this->view->registerJsFile($asset->baseUrl.'/locales/bootstrap-datepicker.'.$language.'.min.js', [
+            'depends' => ['yii\web\JqueryAsset', 'omnilight\assets\DatePickerAsset'],
+        ]);
 
         if (strncmp($this->dateFormat, 'php:', 4) === 0) {
             $format = substr($this->dateFormat, 4);
@@ -53,6 +55,7 @@ class DatePicker extends InputWidget
             $format = FormatConverter::convertDateIcuToPhp($this->dateFormat, 'datetime', $language);
         }
         $this->clientOptions['format'] = $this->convertDateFormat($format);
+        $this->clientOptions['language'] = $language;
 
 
         $this->registerClientOptions('datepicker', $containerID);
@@ -79,20 +82,6 @@ class DatePicker extends InputWidget
     }
 
     /**
-     * Registers a specific jQuery UI widget options
-     * @param string $name the name of the jQuery UI widget
-     * @param string $id the ID of the widget
-     */
-    protected function registerClientOptions($name, $id)
-    {
-        if ($this->clientOptions !== false) {
-            $options = empty($this->clientOptions) ? '' : Json::encode($this->clientOptions);
-            $js = "jQuery('#$id').$name($options);";
-            $this->getView()->registerJs($js);
-        }
-    }
-
-    /**
      * Automatically convert the date format from PHP DateTime to Bootstrap datepicker format
      *
      * @return string
@@ -114,5 +103,19 @@ class DatePicker extends InputWidget
             'y' => 'yy', // 15
             'Y' => 'yyyy', // 2015
         ]);
+    }
+
+    /**
+     * Registers a specific jQuery UI widget options
+     * @param string $name the name of the jQuery UI widget
+     * @param string $id the ID of the widget
+     */
+    protected function registerClientOptions($name, $id)
+    {
+        if ($this->clientOptions !== false) {
+            $options = empty($this->clientOptions) ? '' : Json::encode($this->clientOptions);
+            $js = "jQuery('#$id').$name($options);";
+            $this->getView()->registerJs($js);
+        }
     }
 }
