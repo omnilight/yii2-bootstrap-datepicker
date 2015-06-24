@@ -4,6 +4,7 @@ namespace omnilight\widgets;
 
 use omnilight\assets\DatePickerAsset;
 use Yii;
+use yii\helpers\ArrayHelper;
 use yii\helpers\FormatConverter;
 use yii\helpers\Html;
 use yii\helpers\Json;
@@ -27,6 +28,10 @@ class DatePicker extends InputWidget
      * @var array the options for the underlying js widget.
      */
     public $clientOptions = [];
+    /**
+     * @var array the events for widget
+     */
+    public $clientEvents = [];
 
     public function init()
     {
@@ -114,7 +119,11 @@ class DatePicker extends InputWidget
     {
         if ($this->clientOptions !== false) {
             $options = empty($this->clientOptions) ? '' : Json::encode($this->clientOptions);
-            $js = "jQuery('#$id').$name($options);";
+            $js = "jQuery('#$id').$name($options)";
+            foreach ($this->clientEvents as $name => $handler) {
+                $js .= ".on('{$name}', {$handler})";
+            }
+            $js .= ';';
             $this->getView()->registerJs($js);
         }
     }
