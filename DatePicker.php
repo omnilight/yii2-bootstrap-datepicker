@@ -68,14 +68,16 @@ class DatePicker extends InputWidget
 
     protected function renderWidget()
     {
-        if ($this->hasModel()) {
-            $value = Html::getAttributeValue($this->model, $this->attribute);
-        } else {
-            $value = $this->value;
-        }
-
         $options = $this->options;
-        $options['value'] = $value;
+
+        if ($options['value'] != null && !empty($options['value'])) {
+            if ($this->hasModel()) {
+                $value = Html::getAttributeValue($this->model, $this->attribute);
+            } else {
+                $value = $this->value;
+            }
+            $options['value'] = $value;
+        }
 
         if ($this->hasModel()) {
             $contents[] = Html::activeTextInput($this->model, $this->attribute, $options);
