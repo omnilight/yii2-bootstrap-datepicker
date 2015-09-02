@@ -70,7 +70,7 @@ class DatePicker extends InputWidget
     {
         $options = $this->options;
 
-        if ($options['value'] != null && !empty($options['value'])) {
+        if ($options['value'] == null || empty($options['value'])) {
             if ($this->hasModel()) {
                 $value = Html::getAttributeValue($this->model, $this->attribute);
             } else {
