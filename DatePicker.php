@@ -1,6 +1,6 @@
 <?php
 
-namespace gregtr\widgets;
+namespace omnilight\widgets;
 
 use omnilight\assets\DatePickerAsset;
 use Yii;
@@ -70,7 +70,7 @@ class DatePicker extends InputWidget
     {
         $options = $this->options;
 
-        if ($options['value'] == null || empty($options['value'])) {
+        if (isset($options['value']) || empty($options['value'])) {
             if ($this->hasModel()) {
                 $value = Html::getAttributeValue($this->model, $this->attribute);
             } else {

@@ -1,5 +1,5 @@
 {
-    "name": "gregtr/yii2-bootstrap-datepicker",
+    "name": "omnilight/yii2-bootstrap-datepicker",
     "description": "Date picker component for Bootstrap for Yii2 framework",
     "keywords": ["yii2", "date", "picker"],
     "minimum-stability": "dev",

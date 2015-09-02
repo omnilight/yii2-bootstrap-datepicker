@@ -1,6 +1,6 @@
 <?php
 
-namespace gregtr\assets;
+namespace omnilight\assets;
 
 use yii\web\AssetBundle;
 
