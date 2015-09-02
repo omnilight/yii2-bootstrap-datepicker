@@ -1,6 +1,6 @@
 <?php
 
-namespace omnilight\widgets;
+namespace GregTr\widgets;
 
 use omnilight\assets\DatePickerAsset;
 use Yii;

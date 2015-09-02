@@ -1,6 +1,6 @@
 <?php
 
-namespace omnilight\assets;
+namespace GregTr\assets;
 
 use yii\web\AssetBundle;
 
@@ -21,4 +21,4 @@ class DatePickerAsset extends AssetBundle
     public $depends = [
         'yii\web\JqueryAsset',
     ];
-} 
+}
