@@ -21,4 +21,4 @@ class DatePickerAsset extends AssetBundle
     public $depends = [
         'yii\web\JqueryAsset',
     ];
-} 
+}
