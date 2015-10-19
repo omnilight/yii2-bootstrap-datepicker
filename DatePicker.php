@@ -82,7 +82,7 @@ class DatePicker extends InputWidget
         if ($this->hasModel()) {
             $contents[] = Html::activeTextInput($this->model, $this->attribute, $options);
         } else {
-            $contents[] = Html::textInput($this->name, $value, $options);
+            $contents[] = Html::textInput($this->name, $this->value, $options);
         }
 
         return implode("\n", $contents);
