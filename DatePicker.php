@@ -8,6 +8,8 @@ use yii\helpers\ArrayHelper;
 use yii\helpers\FormatConverter;
 use yii\helpers\Html;
 use yii\helpers\Json;
+use yii\web\AssetBundle;
+use yii\web\View;
 use yii\widgets\InputWidget;
 
 
@@ -32,6 +34,12 @@ class DatePicker extends InputWidget
      * @var array the events for widget
      */
     public $clientEvents = [];
+    /**
+     * If true, no conflict option will be used that gives ability to use it with jquery ui
+     * If string - it should be name of the asset with witch we do not want conflict
+     * @var bool | string
+     */
+    public $noConflict = false;
 
     public function init()
     {
@@ -45,6 +53,11 @@ class DatePicker extends InputWidget
     public function run()
     {
         echo $this->renderWidget() . "\n";
+        if (is_string($this->noConflict)) {
+            /** @var AssetBundle $asset */
+            $asset = $this->noConflict;
+            $asset::register($this->view);
+        }
         $asset = DatePickerAsset::register($this->view);
 
         $containerID = $this->options['id'];
@@ -62,8 +75,12 @@ class DatePicker extends InputWidget
         $this->clientOptions['format'] = $this->convertDateFormat($format);
         $this->clientOptions['language'] = $language;
 
-
-        $this->registerClientOptions('datepicker', $containerID);
+        if ($this->noConflict) {
+            $this->registerNoConflict();
+            $this->registerClientOptions('datepickerNoConflict', $containerID);
+        } else {
+            $this->registerClientOptions('datepicker', $containerID);
+        }
     }
 
     protected function renderWidget()
@@ -128,5 +145,16 @@ class DatePicker extends InputWidget
             $js .= ';';
             $this->getView()->registerJs($js);
         }
+    }
+
+    private function registerNoConflict()
+    {
+        $js =<<<JS
+(function() {
+    var datepicker = $.fn.datepicker.noConflict();
+    $.fn.datepickerNoConflict = datepicker;
+})();
+JS;
+        $this->view->registerJs($js, View::POS_END, 'bootstrap-datepicker-no-conflict');
     }
 }
